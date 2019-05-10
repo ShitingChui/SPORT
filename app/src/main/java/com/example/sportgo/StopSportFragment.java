@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,14 @@ public class StopSportFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stop_sport, container, false);
+        Button btnStopSportFragment = (Button)view.findViewById(R.id.button_stop_sport);
 
-        buttonStoptSport = view.findViewById(R.id.button_stop_sport);
-        buttonStoptSport.setOnClickListener(new View.OnClickListener() {
+        btnStopSportFragment.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                FragmentTransaction frTwo= getFragmentManager().beginTransaction();
+                frTwo.replace(R.id.fragment_container,new SportFragment());
+                frTwo.commit();
             }
         });
 
