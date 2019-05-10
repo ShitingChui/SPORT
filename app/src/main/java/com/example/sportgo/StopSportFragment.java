@@ -22,9 +22,9 @@ public class StopSportFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_stop_sport, container, false);
+        View view = inflater.inflate(R.layout.fragment_stop_sport, container, false);
 
-        buttonStoptSport = v.findViewById(R.id.button_stop_sport);
+        buttonStoptSport = view.findViewById(R.id.button_stop_sport);
         buttonStoptSport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,7 +32,7 @@ public class StopSportFragment extends Fragment {
             }
         });
 
-        return v;
+        return view;
     }
 
 

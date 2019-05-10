@@ -16,7 +16,7 @@
         android:textColor="#ffffff"
         android:layout_marginTop="15dp"
         android:background="@drawable/button_rounded_gray"
-        android:onClick="btn_sport"
+        android:onClick="btn_stop_sport"
         />
 
     <ImageView
