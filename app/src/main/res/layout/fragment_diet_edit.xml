@@ -31,14 +31,14 @@
 
 
             <Button
-                android:id="@+id/button_edit_diet"
+                android:id="@+id/button_save_diet"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="-8dp"
                 android:layout_marginLeft="18dp"
                 android:background="@drawable/button_rounded_gray"
                 android:onClick="btn_sport"
-                android:text="編輯"
+                android:text="儲存"
                 android:textColor="#ffffff"
                 android:textSize="13sp" />
 

@@ -7,6 +7,9 @@
     android:padding="30dp"
     >
 
+
+
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,21 +27,21 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="85dp"
-                android:text="飲食紀錄"
+                android:text="我的檔案"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
 
 
             <Button
-                android:id="@+id/button_edit_diet"
+                android:id="@+id/button_save_profile"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="-8dp"
                 android:layout_marginLeft="18dp"
                 android:background="@drawable/button_rounded_gray"
                 android:onClick="btn_sport"
-                android:text="編輯"
+                android:text="儲存檔案"
                 android:textColor="#ffffff"
                 android:textSize="13sp" />
 
@@ -49,11 +52,10 @@
     </android.support.design.widget.TextInputLayout>
 
 
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:src="@drawable/ic_restaurant"
+        android:src="@drawable/ic_singup"
         android:padding="20dp"
         />
 
@@ -74,8 +76,8 @@
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="40dp"
-                android:text="日期"
+                android:layout_marginLeft="100dp"
+                android:text="姓名:"
                 android:textSize="15sp"
                 />
 
@@ -84,7 +86,35 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="8dp"
-                android:text="飲食項目"
+                android:text="姓名"
+                android:textSize="15sp"
+                />
+
+        </LinearLayout>
+
+
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_margin="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="100dp"
+                android:text="性別:"
                 android:textSize="15sp"
                 />
 
@@ -93,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="8dp"
-                android:text="卡路里"
+                android:text="性別"
                 android:textSize="15sp"
                 />
 
@@ -118,8 +148,8 @@
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="40dp"
-                android:text="日期"
+                android:layout_marginLeft="100dp"
+                android:text="生日:"
                 android:textSize="15sp"
                 />
 
@@ -128,16 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="8dp"
-                android:text="飲食項目"
-                android:textSize="15sp"
-                />
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="卡路里"
+                android:text="生日"
                 android:textSize="15sp"
                 />
 
@@ -162,8 +183,8 @@
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="40dp"
-                android:text="日期"
+                android:layout_marginLeft="100dp"
+                android:text="身高:"
                 android:textSize="15sp"
                 />
 
@@ -172,16 +193,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="8dp"
-                android:text="飲食項目"
-                android:textSize="15sp"
-                />
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="卡路里"
+                android:text="身高"
                 android:textSize="15sp"
                 />
 
@@ -206,8 +218,8 @@
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="40dp"
-                android:text="日期"
+                android:layout_marginLeft="100dp"
+                android:text="體重:"
                 android:textSize="15sp"
                 />
 
@@ -216,22 +228,50 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="8dp"
-                android:text="飲食項目"
-                android:textSize="15sp"
-                />
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="卡路里"
+                android:text="體重"
                 android:textSize="15sp"
                 />
 
         </LinearLayout>
 
     </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_margin="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="103dp"
+                android:text="BMI:"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="8dp"
+                android:text="BMI"
+                android:textSize="15sp"
+                />
+
+        </LinearLayout>
+
+    </android.support.design.widget.TextInputLayout>
+
+
 
 
 

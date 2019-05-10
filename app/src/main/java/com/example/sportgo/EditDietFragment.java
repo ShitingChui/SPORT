@@ -10,19 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class ProfileFragment extends Fragment {
+public class EditDietFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        Button btnProfileFragment = (Button)view.findViewById(R.id.button_edit_profile);
+        View view = inflater.inflate(R.layout.fragment_diet_edit, container, false);
+        Button btnSaveDietFragment = (Button)view.findViewById(R.id.button_save_profile);
 
-        btnProfileFragment.setOnClickListener(new View.OnClickListener(){
+        btnSaveDietFragment.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                FragmentTransaction pr= getFragmentManager().beginTransaction();
-                pr.replace(R.id.fragment_container,new EditProfileFragment());
-                pr.commit();
+                FragmentTransaction drTwo= getFragmentManager().beginTransaction();
+                drTwo.replace(R.id.fragment_container,new DietFragment());
+                drTwo.commit();
             }
         });
         return view;
