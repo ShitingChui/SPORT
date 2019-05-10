@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <group android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/nav_sport"
+            android:icon="@drawable/ic_sport"
+            android:title="我要運動" />
+        <item
+            android:id="@+id/nav_sport_record"
+            android:icon="@drawable/ic_sport_record"
+            android:title="運動紀錄" />
+        <item
+            android:id="@+id/nav_suggestion"
+            android:icon="@drawable/ic_sport_suggestion"
+            android:title="運動建議" />
+
+        <item
+            android:id="@+id/nav_diet_record"
+            android:icon="@drawable/ic_diet_record"
+            android:title="飲食紀錄" />
+        <item
+            android:id="@+id/nav_reporter"
+            android:icon="@drawable/ic_reporter"
+            android:title="報表" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="我的檔案" />
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/ic_log_out"
+            android:title="登出" />
+
+    </group>
+
+</menu>
