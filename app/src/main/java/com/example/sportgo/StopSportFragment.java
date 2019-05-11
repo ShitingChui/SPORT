@@ -17,9 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -41,21 +38,9 @@ public class StopSportFragment extends Fragment {
     public static final int MAX_SENSOR_VALUES = 6;
     private SensorManager sensorManager;
     private Sensor sensor;
-    private Sensor sensor2;// [2019.04.27 by ANGUS]
     private SensorEventListener listener;
     private Sensor[] sensorArray;
     private int sensorIndex;
-    private TextView viewDeviceType;
-    private TextView viewSensorType;
-    private TextView viewSensorDetails;
-    private TextView viewSensorAccuracy;
-    private TextView viewSensorRate;
-    private TextView viewSensorRaw;
-    private LinearLayout viewSensorBarLayout;
-    private Button viewSensorNext;
-    private Button viewSensorPrev;
-    private Button viewOutput;//start/stop output button[2019.04.16 by CTW]
-    private RelativeLayout viewMainLayout;
     private DecimalFormat decimalFormat;
     private boolean stopHandler;
     private Handler uiThreadHandler;
@@ -72,9 +57,17 @@ public class StopSportFragment extends Fragment {
 
     private long startTime = 0; //[2019.05.01 by ANGUS]
     private long startSecond = 0; //[2019.05.01 by ANGUS]
+    private long startMinute = 0; //[2019.05.11 by ANGUS]
+    private long startHour = 0; //[2019.05.11 by ANGUS]
+    private long currentTime = 0; //[2019.05.11 by ANGUS]
+    private long currentSecond = 0; //[2019.05.11 by ANGUS]
+    private long currentMinute = 0; //[2019.05.11 by ANGUS]
+    private long currentHour = 0; //[2019.05.11 by ANGUS]
     int sampleNum = 0;//[2019.05.01 by ANGUS]
 
     private Context mContext;//[2019.05.10 by ANGUS]
+
+    WekaUse wekaUse = new WekaUse();
 
     @Nullable
     @Override
@@ -136,6 +129,9 @@ public class StopSportFragment extends Fragment {
 
         startTime = System.currentTimeMillis();//setTimer //[2019.05.01 by ANGUS]
         startSecond = (startTime / 1000) % 60;//setTimer //[2019.05.01 by ANGUS]
+        startMinute = (startTime / (1000*60)) % 60;//[2019.05.11 by ANGUS]
+        startHour = (startTime / (1000*60*60)) % 24;//[2019.05.11 by ANGUS]
+
         Log.i("sensor", "startSecond = " + startSecond);//[2019.05.01 by ANGUS]
         //the end of difference from CTW's program //[2019.05.10 by ANGUS]
 
@@ -237,7 +233,7 @@ public class StopSportFragment extends Fragment {
                     String raw = "";
 
                     for (int i = 0; i < sensorEvent.values.length; i++) {
-//                        String str = getStrFromFloat(sensorEvent.values[i]);
+//                        String str = getStrFromFloat(sensorEvent.values[i]); // 刪除把資料寫成raw檔的功能 //[2019.05.10 by ANGUS]
 //                        if (raw.length() != 0)
 //                            raw = raw + "\n";
 //                        raw = raw + str;
@@ -247,17 +243,19 @@ public class StopSportFragment extends Fragment {
                     if(ifoutput) {
                         outtemp = outtemp + raw.replace("\n", ",") + "," + Calendar.getInstance().getTime() + "," + sensorEvent.timestamp +"," + sensorIndex +"\n";//save sensors in outtemp  [2019.04.10 by CTW] Add "," + Calendar.getInstance().getTime()[2019.04.27 by ANGUS]
 //                        if(outtemp.getBytes().length >= 10240){
-//                            write.WriteFileExample(outtemp, filename); // 寫入輸入文字 [2019.04.11 by CTW]
+//                            write.WriteFileExample(outtemp, filename); // 寫入輸入文字 [2019.04.11 by CTW] // 刪除寫入文件功能 //[2019.05.10 by ANGUS]
 //                            outtemp = "";//clear outtemp//[2019.04.10 by CTW]
 //                        }
 
-                        Long currentTime = System.currentTimeMillis();//計算時間差// [2019.05.01 by ANGUS]
-                        Long currentSecond = (currentTime / 1000) % 60;// [2019.05.01 by ANGUS]
+                        currentTime = System.currentTimeMillis();//計算時間差// [2019.05.01 by ANGUS]
+                        currentSecond = (currentTime / 1000) % 60;// [2019.05.01 by ANGUS]
+                        currentMinute = (currentTime / (1000*60)) % 60;//[2019.05.11 by ANGUS]
+                        currentHour = (currentTime / (1000*60*60)) % 24;//[2019.05.11 by ANGUS]
 //                        Log.i("sensor", "currentSecond = " + currentSecond);
                         if(currentSecond < startSecond){
                             currentSecond += 60;
                         }
-                        if(currentSecond - startSecond == 11){
+                        if(currentSecond - startSecond == 11){ //10秒後停止
 //                            write.WriteFileExample(outtemp, filename); // [2019.05.01 by ANGUS]
                             outtemp = "";//clear outtemp // [2019.05.01 by ANGUS]
                             ifoutput = false;// [2019.05.01 by ANGUS]
