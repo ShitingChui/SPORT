@@ -25,6 +25,7 @@
 
         >
         <EditText
+            android:id="@+id/editText_mail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="電子信箱:"
@@ -44,6 +45,7 @@
         >
 
         <EditText
+            android:id="@+id/editText_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="密碼:"
@@ -55,6 +57,7 @@
 
 
     <Button
+        android:id="@+id/button_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
