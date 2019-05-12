@@ -1,21 +1,21 @@
 package com.example.sportgo;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.support.v4.app.FragmentActivity;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+        , StopSportFragment.StopSportFragmentListener
+//        , SportFragment.SportFragmentListener
+{
 
 
     private DrawerLayout drawer;
@@ -51,7 +51,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new SportFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_sport);
         }
+
+//        sportFragment = new SportFragment();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.fragment_container, new StopSportFragment())
+//                .replace(R.id.fragment_container, new SportFragment())
+//                .commit();
     }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+//        if (fragment instanceof StopSportFragment) {
+//            StopSportFragment stopSportFragment = (StopSportFragment) fragment;
+//            stopSportFragment.setStopSportFragmentListener(this);
+//        }
+    }
+
+    @Override
+    public void onInputASent(CharSequence input) {
+//        SportFragment sportFragment = (StopSportFragment)getSupportFragmentManager().findFragmentById(R.id.);
+//        if (sportFragment != null) {
+//            sportFragment.updateExerciseTime(input);
+//        } else {
+//            SportFragment newSportFragment = new SportFragment();
+//            Bundle args = new Bundle();
+//            args.putString("ExerciseTime", input.toString());
+//            newSportFragment.setArguments(args);
+//        }
+    }
+//
+//    @Override
+//    public void onInputBSent(CharSequence input , TextView textView) {
+//        viewExerciseTime = textView;
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -99,10 +132,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
-
-
-
-
-
-
 }

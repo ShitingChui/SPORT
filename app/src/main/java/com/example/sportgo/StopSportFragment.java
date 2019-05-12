@@ -66,8 +66,15 @@ public class StopSportFragment extends Fragment {
     int sampleNum = 0;//[2019.05.01 by ANGUS]
 
     private Context mContext;//[2019.05.10 by ANGUS]
+    private StopSportFragmentListener stopSportFragmentListener;
 
-    WekaUse wekaUse = new WekaUse();
+    public void setStopSportFragmentListener(StopSportFragmentListener callback) {
+        this.stopSportFragmentListener = callback;
+    }
+
+    public interface StopSportFragmentListener {
+        void onInputASent(CharSequence input);
+    }
 
     @Nullable
     @Override
@@ -75,16 +82,47 @@ public class StopSportFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_stop_sport, container, false);
         Button btnStopSportFragment = (Button)view.findViewById(R.id.button_stop_sport);
 
+
         btnStopSportFragment.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                if(currentSecond < startSecond){
+                    currentSecond += 60;
+                    currentMinute -= 1;
+                }
+                if(currentMinute < startMinute){
+                    currentMinute += 60;
+                    currentHour -= 1;
+                }
+                if(currentHour < startHour){
+                    currentHour += 24;
+                }
+                long ExerSec = currentSecond - startSecond;
+                long ExerMin = currentMinute - startMinute;
+                long ExerHr = currentHour - startHour;
+                String ExerciseTime = ExerHr + " 時 " + ExerMin + " 分 " + ExerSec + " 秒 ";
+
+                CharSequence input = ExerciseTime;
+                stopSportFragmentListener.onInputASent(input);
+
+//                SportFragment sportFragment = new SportFragment();
+//                Bundle args = new Bundle();
+//                args.putString("ExerciseTime", ExerciseTime);
+//                sportFragment.setArguments(args);
+
+
                 FragmentTransaction frTwo= getFragmentManager().beginTransaction();
                 frTwo.replace(R.id.fragment_container,new SportFragment());
+
                 frTwo.commit();
             }
         });
 
         return view;
+    }
+
+    public void updateExerciseTime(CharSequence newText) {
+
     }
 
     //[2019.05.10 by ANGUS]
@@ -251,16 +289,20 @@ public class StopSportFragment extends Fragment {
                         currentSecond = (currentTime / 1000) % 60;// [2019.05.01 by ANGUS]
                         currentMinute = (currentTime / (1000*60)) % 60;//[2019.05.11 by ANGUS]
                         currentHour = (currentTime / (1000*60*60)) % 24;//[2019.05.11 by ANGUS]
-//                        Log.i("sensor", "currentSecond = " + currentSecond);
-                        if(currentSecond < startSecond){
-                            currentSecond += 60;
-                        }
-                        if(currentSecond - startSecond == 11){ //10秒後停止
-//                            write.WriteFileExample(outtemp, filename); // [2019.05.01 by ANGUS]
-                            outtemp = "";//clear outtemp // [2019.05.01 by ANGUS]
-                            ifoutput = false;// [2019.05.01 by ANGUS]
-                        }
-
+                        Log.i("sensor", "startSecond = " + startSecond);
+                        Log.i("sensor", "startMinute = " + startMinute);
+                        Log.i("sensor", "startHour = " + startHour);
+                        Log.i("sensor", "currentSecond = " + currentSecond);
+                        Log.i("sensor", "currentMinute = " + currentMinute);
+                        Log.i("sensor", "currentHour = " + currentHour);
+//                        if(currentSecond < startSecond){
+//                            currentSecond += 60;
+//                        }
+//                        if(currentSecond - startSecond == 11){ //10秒後停止
+////                            write.WriteFileExample(outtemp, filename); // [2019.05.01 by ANGUS]
+//                            outtemp = "";//clear outtemp // [2019.05.01 by ANGUS]
+//                            ifoutput = false;// [2019.05.01 by ANGUS]
+//                        }
                     }
                 }
             }
@@ -286,11 +328,17 @@ public class StopSportFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof StopSportFragmentListener) {
+            stopSportFragmentListener = (StopSportFragmentListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + "must implement stopSportFragmentListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         sListener = null; //Edit listener to sListener //[2019.05.10 by ANGUS]
+        stopSportFragmentListener = null;
     }
 }
