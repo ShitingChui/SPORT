@@ -17,11 +17,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import weka.core.Attribute;
+import weka.core.DenseInstance;
+import weka.core.Instance;
+import weka.core.Instances;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -49,7 +57,7 @@ public class StopSportFragment extends Fragment {
     private int samplesCount;
     private int samplesSeconds;
 
-//    private Write write = new Write(StopSportFragment.this); //[2019.04.9 by CTW]
+    private Write write = new Write(StopSportFragment.this); //[2019.04.9 by CTW]
 
     private String outtemp = "";// temp record of sensor raw data [2019.04.10 by CTW]
     private String filename = "";// file name [2019.04.11 by CTW]
@@ -63,10 +71,24 @@ public class StopSportFragment extends Fragment {
     private long currentSecond = 0; //[2019.05.11 by ANGUS]
     private long currentMinute = 0; //[2019.05.11 by ANGUS]
     private long currentHour = 0; //[2019.05.11 by ANGUS]
-    int sampleNum = 0;//[2019.05.01 by ANGUS]
+    private int sampleNum = 0;//[2019.05.01 by ANGUS]
+    private TextView textView;
 
     private Context mContext;//[2019.05.10 by ANGUS]
     private StopSportFragmentListener stopSportFragmentListener;
+
+    // Machine Learning
+    private int resultNum;
+    private String path = "";// /sdcard/Accle_model.model
+    private ArrayList<Attribute> adjust;
+    private Instances data;
+    private double testValue[] = {-10.27, -6.35, -0.225};
+    private Instance testInstance;
+    private WekaUse wekaUse = new WekaUse();
+    private ImageView imageView;
+    private String uri = "@drawable/running";
+    int imageResource;
+
 
     public void setStopSportFragmentListener(StopSportFragmentListener callback) {
         this.stopSportFragmentListener = callback;
@@ -81,7 +103,9 @@ public class StopSportFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stop_sport, container, false);
         Button btnStopSportFragment = (Button)view.findViewById(R.id.button_stop_sport);
-
+        imageView = (ImageView) view.findViewById(R.id.view_exercise);
+        imageView.setImageResource(R.drawable.walking);
+        textView = (TextView) view.findViewById(R.id.textView);
 
         btnStopSportFragment.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -143,7 +167,7 @@ public class StopSportFragment extends Fragment {
             Logging.debug("Found sensor " + i + " " + sensorArray[i].toString());
             outtemp = outtemp + "Found sensor " + i + " " + sensorArray[i].toString() + "\n";//save sensor list in outtemp [2019.04.16 by CTW]
         }
-//        write.WriteFileExample(outtemp, "SensorList.txt");// out put sensor list [2019.04.16 by CTW]
+        write.WriteFileExample(outtemp, "SensorList.txt");// out put sensor list [2019.04.16 by CTW]
         outtemp = "";// clear outtemp [2019.04.16 by CTW]
 
         sensorIndex = 0;
@@ -198,6 +222,14 @@ public class StopSportFragment extends Fragment {
                 }
             }
         };
+
+        //Machine Learning
+        adjust = new ArrayList<Attribute>();
+        adjust.add(new Attribute("accr_x"));
+        adjust.add(new Attribute("accr_y"));
+        adjust.add(new Attribute("accr_z"));
+        data = new Instances("TestInstances", adjust, 0);
+        data.setClassIndex(data.numAttributes() - 1);
     }
 
     @Override
@@ -226,6 +258,7 @@ public class StopSportFragment extends Fragment {
         else
             return decimalFormat.format(in);
     }
+
     private void startSensor() {
         String type = "#" + (sensorIndex+1) + ", type " + sensor.getType();
         if (Build.VERSION.SDK_INT >= 20)
@@ -240,18 +273,16 @@ public class StopSportFragment extends Fragment {
 
         listener = new SensorEventListener() {
 
-            public String getStrFromFloat(float in) {
-                if ((in > -0.00001) && (in < 0.00001))
-                    in = 0;
-                if (in == Math.rint(in))
-                    return Integer.toString((int)in);
-                else
-                    return decimalFormat.format(in);
-            }
+//            public String getStrFromFloat(float in) {
+//                if ((in > -0.00001) && (in < 0.00001))
+//                    in = 0;
+//                if (in == Math.rint(in))
+//                    return Integer.toString((int)in);
+//                else
+//                    return decimalFormat.format(in);
+//            }
 
             public int min(int a, int b) { if (a < b) { return a; } else { return b; } }
-
-
 
             public void onSensorChanged(SensorEvent sensorEvent) {
 //                if(sensorIndex == 1 && sampleNum == 11){ //每10筆資料換一次偵測器//[2019.05.02 by ANGUS]
@@ -264,6 +295,17 @@ public class StopSportFragment extends Fragment {
 //                sampleNum++;
 //                Log.i("sensor", "sampleNum = " + sampleNum);
 
+                currentTime = System.currentTimeMillis();//計算時間差// [2019.05.01 by ANGUS]
+                currentSecond = (currentTime / 1000) % 60;// [2019.05.01 by ANGUS]
+                currentMinute = (currentTime / (1000*60)) % 60;//[2019.05.11 by ANGUS]
+                currentHour = (currentTime / (1000*60*60)) % 24;//[2019.05.11 by ANGUS]
+                Log.i("sensor", "startSecond = " + startSecond);
+                Log.i("sensor", "startMinute = " + startMinute);
+                Log.i("sensor", "startHour = " + startHour);
+                Log.i("sensor", "currentSecond = " + currentSecond);
+                Log.i("sensor", "currentMinute = " + currentMinute);
+                Log.i("sensor", "currentHour = " + currentHour);
+
                 if (sensorEvent.sensor.getType() == sensor.getType()) {
                     Logging.detailed("Sensor update: " + Arrays.toString(sensorEvent.values));
                     samplesCount++;
@@ -271,12 +313,58 @@ public class StopSportFragment extends Fragment {
                     String raw = "";
 
                     for (int i = 0; i < sensorEvent.values.length; i++) {
-//                        String str = getStrFromFloat(sensorEvent.values[i]); // 刪除把資料寫成raw檔的功能 //[2019.05.10 by ANGUS]
+//                        String str = getStrFromFloat(sensorEvent.values[i]); // 把資料寫成raw檔的功能 //[2019.05.10 by ANGUS]
 //                        if (raw.length() != 0)
 //                            raw = raw + "\n";
 //                        raw = raw + str;
-                        Log.i("sensor", "sensorValue" + i + " = " + sensorEvent.values[i]);
+                        Log.i("sensor", "sensorValue" + i + " = " + sensorEvent.values[i]); // 一次紀錄1筆 X,Y,Z 資料
+                        testValue[i] = sensorEvent.values[i]; // for Machine Learning
                     }
+
+                    //Machine learning
+                    testInstance = new DenseInstance(1.0, testValue);
+                    testInstance.setDataset(data);
+                    try {
+                        resultNum = WekaUse.getResult(path, testInstance);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("ML", resultNum + "");
+
+                    if(sensorEvent.values[0] > (-3) && sensorEvent.values[0] < 1 &&
+                            sensorEvent.values[1] > (-1) && sensorEvent.values[1] < 1 &&
+                            sensorEvent.values[2] > 9 && sensorEvent.values[2] < 10) {
+                        imageView.setImageResource(R.drawable.walking);
+                    } else if(sensorEvent.values[0] > (-9) && sensorEvent.values[0] < 7 &&
+                            sensorEvent.values[1] > (-15) && sensorEvent.values[1] < -5 &&
+                            sensorEvent.values[2] > -2 && sensorEvent.values[2] < 5) {
+                        imageView.setImageResource(R.drawable.walking);
+                    } else if(sensorEvent.values[0] > (-2) && sensorEvent.values[0] < 1 &&
+                            sensorEvent.values[1] > 0 && sensorEvent.values[1] < 10 &&
+                            sensorEvent.values[2] > 3 && sensorEvent.values[2] < 10) {
+                        imageView.setImageResource(R.drawable.walking);
+                    }
+                    else {
+                        imageView.setImageResource(R.drawable.running);
+                    }
+
+                    if(currentSecond < startSecond){
+                        currentSecond += 60;
+                        currentMinute -= 1;
+                    }
+                    if(currentMinute < startMinute){
+                        currentMinute += 60;
+                        currentHour -= 1;
+                    }
+                    if(currentHour < startHour){
+                        currentHour += 24;
+                    }
+                    long ExerSec = currentSecond - startSecond;
+                    long ExerMin = currentMinute - startMinute;
+                    long ExerHr = currentHour - startHour;
+                    String ExerciseTime = ExerHr + " 時 " + ExerMin + " 分 " + ExerSec + " 秒 ";
+
+                    textView.setText("運動時間：" + ExerciseTime);
 
                     if(ifoutput) {
                         outtemp = outtemp + raw.replace("\n", ",") + "," + Calendar.getInstance().getTime() + "," + sensorEvent.timestamp +"," + sensorIndex +"\n";//save sensors in outtemp  [2019.04.10 by CTW] Add "," + Calendar.getInstance().getTime()[2019.04.27 by ANGUS]
@@ -285,24 +373,14 @@ public class StopSportFragment extends Fragment {
 //                            outtemp = "";//clear outtemp//[2019.04.10 by CTW]
 //                        }
 
-                        currentTime = System.currentTimeMillis();//計算時間差// [2019.05.01 by ANGUS]
-                        currentSecond = (currentTime / 1000) % 60;// [2019.05.01 by ANGUS]
-                        currentMinute = (currentTime / (1000*60)) % 60;//[2019.05.11 by ANGUS]
-                        currentHour = (currentTime / (1000*60*60)) % 24;//[2019.05.11 by ANGUS]
-                        Log.i("sensor", "startSecond = " + startSecond);
-                        Log.i("sensor", "startMinute = " + startMinute);
-                        Log.i("sensor", "startHour = " + startHour);
-                        Log.i("sensor", "currentSecond = " + currentSecond);
-                        Log.i("sensor", "currentMinute = " + currentMinute);
-                        Log.i("sensor", "currentHour = " + currentHour);
-//                        if(currentSecond < startSecond){
-//                            currentSecond += 60;
-//                        }
-//                        if(currentSecond - startSecond == 11){ //10秒後停止
-////                            write.WriteFileExample(outtemp, filename); // [2019.05.01 by ANGUS]
-//                            outtemp = "";//clear outtemp // [2019.05.01 by ANGUS]
-//                            ifoutput = false;// [2019.05.01 by ANGUS]
-//                        }
+                        if(currentSecond < startSecond){
+                            currentSecond += 60;
+                        }
+                        if(currentSecond - startSecond == 11){ //10秒後停止
+//                            write.WriteFileExample(outtemp, filename); // [2019.05.01 by ANGUS]
+                            outtemp = "";//clear outtemp // [2019.05.01 by ANGUS]
+                            ifoutput = false;// [2019.05.01 by ANGUS]
+                        }
                     }
                 }
             }

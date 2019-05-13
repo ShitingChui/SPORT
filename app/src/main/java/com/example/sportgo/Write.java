@@ -3,15 +3,14 @@ package com.example.sportgo;
 ////add output to file [2019.04.10 by CTW]
 //package net.waynepiekarski.wearsensors;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.sql.Timestamp;
-
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 
@@ -29,8 +28,8 @@ public class Write {
 
         try {
 //            File sdcard = Environment.getExternalStorageDirectory();
-            File sdcard = context.getFilesDir();
-//            File sdcard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS); //寫入檔案至外部公用資料夾 //[2019.05.04 by ANGUS]
+//            File sdcard = context.getFilesDir();
+            File sdcard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS); //寫入檔案至外部公用資料夾 //[2019.05.04 by ANGUS]
 
             file = new File(sdcard, filename); //輸出檔案位置 //now date time [2019.04.10 by CTW]
             Log.i("Write File:", file + "");
