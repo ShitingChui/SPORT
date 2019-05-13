@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="40dp"
-                android:text="日期"
+                android:text="5/12"
                 android:textSize="15sp"
                 />
 
@@ -105,8 +105,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="運動項目"
+                android:layout_marginLeft="21dp"
+                android:text="跑步"
                 android:textSize="15sp"
                 />
 
@@ -114,8 +114,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="運動時間"
+                android:layout_marginLeft="3dp"
+                android:text="00:32:09"
                 android:textSize="15sp"
                 />
 
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="40dp"
-                android:text="日期"
+                android:text="5/10"
                 android:textSize="15sp"
                 />
 
@@ -149,8 +149,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="運動項目"
+                android:layout_marginLeft="21dp"
+                android:text="走路"
                 android:textSize="15sp"
                 />
 
@@ -158,8 +158,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="運動時間"
+                android:layout_marginLeft="3dp"
+                android:text="01:05:25"
                 android:textSize="15sp"
                 />
 
@@ -185,7 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="40dp"
-                android:text="日期"
+                android:text="5/08"
                 android:textSize="15sp"
                 />
 
@@ -193,8 +193,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="運動項目"
+                android:layout_marginLeft="21dp"
+                android:text="跑步"
                 android:textSize="15sp"
                 />
 
@@ -202,8 +202,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="8dp"
-                android:text="運動時間"
+                android:layout_marginLeft="3dp"
+                android:text="00:30:49"
                 android:textSize="15sp"
                 />
 
