@@ -70,15 +70,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onInputASent(CharSequence input) {
-//        SportFragment sportFragment = (StopSportFragment)getSupportFragmentManager().findFragmentById(R.id.);
-//        if (sportFragment != null) {
-//            sportFragment.updateExerciseTime(input);
-//        } else {
-//            SportFragment newSportFragment = new SportFragment();
-//            Bundle args = new Bundle();
-//            args.putString("ExerciseTime", input.toString());
-//            newSportFragment.setArguments(args);
-//        }
+        SportFragment sportFragment = (SportFragment) getSupportFragmentManager().findFragmentById(R.id.viewExerciseTime);
+        if (sportFragment != null) {
+            sportFragment.updateExerciseTime(input);
+        } else {
+            SportFragment newSportFragment = new SportFragment();
+            Bundle args = new Bundle();
+            args.putString("ExerciseTime", input.toString());
+            newSportFragment.setArguments(args);
+        }
     }
 //
 //    @Override

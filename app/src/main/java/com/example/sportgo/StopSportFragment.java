@@ -134,7 +134,6 @@ public class StopSportFragment extends Fragment {
 //                args.putString("ExerciseTime", ExerciseTime);
 //                sportFragment.setArguments(args);
 
-
                 FragmentTransaction frTwo= getFragmentManager().beginTransaction();
                 frTwo.replace(R.id.fragment_container,new SportFragment());
 
@@ -143,10 +142,6 @@ public class StopSportFragment extends Fragment {
         });
 
         return view;
-    }
-
-    public void updateExerciseTime(CharSequence newText) {
-
     }
 
     //[2019.05.10 by ANGUS]
