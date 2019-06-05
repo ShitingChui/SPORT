@@ -18,7 +18,7 @@ public class SportFragment extends Fragment {
 
 //    private SportFragmentListener sportFragmentListener;
     private TextView viewExerciseTime;
-
+    private String time = "";
 //    public interface SportFragmentListener {
 //        void onInputBSent(CharSequence input, TextView textView);
 //    }
@@ -38,17 +38,23 @@ public class SportFragment extends Fragment {
         Button btnStartSportFragment = (Button)view.findViewById(R.id.button_start_sport);
         viewExerciseTime = (TextView)view.findViewById(R.id.viewExerciseTime);
 
-//        Bundle args = getArguments();
-//        if (args != null) {
-//            String ExerciseTime = args.getString("ExerciseTime");
-//            viewExerciseTime.setText(ExerciseTime);
-//        }
+        Bundle args = getArguments();
+        if (args != null) {
+            String ExerciseTime = args.getString("ExerciseTime");
+            viewExerciseTime.setText(ExerciseTime);
+        }
+
+
 
         btnStartSportFragment.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 FragmentTransaction fr= getFragmentManager().beginTransaction();
-                fr.replace(R.id.fragment_container,new StopSportFragment());
+                try {
+                    fr.replace(R.id.fragment_container,new StopSportFragment());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 fr.commit();
 
 //                CharSequence input = "";
@@ -60,7 +66,17 @@ public class SportFragment extends Fragment {
     }
 
     public void updateExerciseTime(CharSequence newText) {
-        viewExerciseTime.setText("運動時間：" + newText);
+//        viewExerciseTime.setText("運動時間：" + newText);
+        time = newText.toString();
+    }
+
+    @Override
+    public void onAttachFragment(Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        if (childFragment instanceof  StopSportFragment) {
+            StopSportFragment stopSportFragment = (StopSportFragment) childFragment;
+            stopSportFragment.setStopSportFragmentListener((StopSportFragment.StopSportFragmentListener) this);
+        }
     }
 
     @Override
@@ -71,6 +87,9 @@ public class SportFragment extends Fragment {
 //        } else {
 //            throw new RuntimeException(context.toString() + "must implement SportFragmentListener");
 //        }
+        if (time != ""){
+            viewExerciseTime.setText("運動時間：" + time);
+        }
     }
 
     @Override

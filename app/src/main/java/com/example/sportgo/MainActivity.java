@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         , StopSportFragment.StopSportFragmentListener
 //        , SportFragment.SportFragmentListener
 {
-
+    private FragmentTransaction fragmentTransaction;
 
     private DrawerLayout drawer;
 
@@ -25,9 +25,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        fragmentTransaction.add(R.id.fragment_container, new SportFragment());
+        fragmentTransaction.add(R.id.fragment_container, new SportFragment(), "sportFragment");
         fragmentTransaction.commit();
 
 
@@ -62,15 +62,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
-//        if (fragment instanceof StopSportFragment) {
-//            StopSportFragment stopSportFragment = (StopSportFragment) fragment;
-//            stopSportFragment.setStopSportFragmentListener(this);
-//        }
+        if (fragment instanceof StopSportFragment) {
+            StopSportFragment stopSportFragment = (StopSportFragment) fragment;
+            stopSportFragment.setStopSportFragmentListener(this);
+        }
     }
 
     @Override
     public void onInputASent(CharSequence input) {
-        SportFragment sportFragment = (SportFragment) getSupportFragmentManager().findFragmentById(R.id.viewExerciseTime);
+        SportFragment sportFragment = (SportFragment) getSupportFragmentManager().findFragmentByTag("sportFragment");
         if (sportFragment != null) {
             sportFragment.updateExerciseTime(input);
         } else {
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Bundle args = new Bundle();
             args.putString("ExerciseTime", input.toString());
             newSportFragment.setArguments(args);
+            newSportFragment.updateExerciseTime(input);
         }
     }
 //

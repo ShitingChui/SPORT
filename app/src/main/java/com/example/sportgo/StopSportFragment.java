@@ -20,16 +20,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import weka.classifiers.trees.REPTree;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.SerializationHelper;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -37,6 +40,9 @@ import static android.content.Context.SENSOR_SERVICE;
 public class StopSportFragment extends Fragment {
     private fragment_stop_sport sListener; //Edit listener to sListener //[2019.05.10 by ANGUS]
     private Button buttonStoptSport;
+
+    public StopSportFragment() throws Exception {
+    }
 
     public interface fragment_stop_sport{
         void onInputASent(CharSequence input);
@@ -78,8 +84,8 @@ public class StopSportFragment extends Fragment {
     private StopSportFragmentListener stopSportFragmentListener;
 
     // Machine Learning
-    private int resultNum;
-    private String path = "";// /sdcard/Accle_model.model
+    private double resultNum;
+    private String path = "/sdcard/Accle_model_build1.model";
     private ArrayList<Attribute> adjust;
     private Instances data;
     private double testValue[] = {-10.27, -6.35, -0.225};
@@ -87,6 +93,7 @@ public class StopSportFragment extends Fragment {
     private WekaUse wekaUse = new WekaUse();
     private ImageView imageView;
     private String uri = "@drawable/running";
+    private REPTree rf;
     int imageResource;
 
 
@@ -104,7 +111,7 @@ public class StopSportFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_stop_sport, container, false);
         Button btnStopSportFragment = (Button)view.findViewById(R.id.button_stop_sport);
         imageView = (ImageView) view.findViewById(R.id.view_exercise);
-        imageView.setImageResource(R.drawable.walking);
+        imageView.setImageResource(R.drawable.walk);
         textView = (TextView) view.findViewById(R.id.textView);
 
         btnStopSportFragment.setOnClickListener(new View.OnClickListener(){
@@ -129,13 +136,14 @@ public class StopSportFragment extends Fragment {
                 CharSequence input = ExerciseTime;
                 stopSportFragmentListener.onInputASent(input);
 
-//                SportFragment sportFragment = new SportFragment();
-//                Bundle args = new Bundle();
-//                args.putString("ExerciseTime", ExerciseTime);
-//                sportFragment.setArguments(args);
+                SportFragment sportFragment = new SportFragment();
+                Bundle args = new Bundle();
+                args.putString("ExerciseTime", ExerciseTime);
+                sportFragment.setArguments(args);
 
                 FragmentTransaction frTwo= getFragmentManager().beginTransaction();
                 frTwo.replace(R.id.fragment_container,new SportFragment());
+                frTwo.addToBackStack(null);
 
                 frTwo.commit();
             }
@@ -225,6 +233,12 @@ public class StopSportFragment extends Fragment {
         adjust.add(new Attribute("accr_z"));
         data = new Instances("TestInstances", adjust, 0);
         data.setClassIndex(data.numAttributes() - 1);
+
+        try {
+            rf = (REPTree) SerializationHelper.read(new FileInputStream(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -320,28 +334,34 @@ public class StopSportFragment extends Fragment {
                     testInstance = new DenseInstance(1.0, testValue);
                     testInstance.setDataset(data);
                     try {
-                        resultNum = WekaUse.getResult(path, testInstance);
+                        resultNum = wekaUse.getResult(testInstance, rf);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     Log.i("ML", resultNum + "");
 
-                    if(sensorEvent.values[0] > (-3) && sensorEvent.values[0] < 1 &&
-                            sensorEvent.values[1] > (-1) && sensorEvent.values[1] < 1 &&
-                            sensorEvent.values[2] > 9 && sensorEvent.values[2] < 10) {
-                        imageView.setImageResource(R.drawable.walking);
-                    } else if(sensorEvent.values[0] > (-9) && sensorEvent.values[0] < 7 &&
-                            sensorEvent.values[1] > (-15) && sensorEvent.values[1] < -5 &&
-                            sensorEvent.values[2] > -2 && sensorEvent.values[2] < 5) {
-                        imageView.setImageResource(R.drawable.walking);
-                    } else if(sensorEvent.values[0] > (-2) && sensorEvent.values[0] < 1 &&
-                            sensorEvent.values[1] > 0 && sensorEvent.values[1] < 10 &&
-                            sensorEvent.values[2] > 3 && sensorEvent.values[2] < 10) {
-                        imageView.setImageResource(R.drawable.walking);
-                    }
-                    else {
-                        imageView.setImageResource(R.drawable.running);
-                    }
+//                    if(resultNum == 0){
+//                        imageView.setImageResource(R.drawable.run);
+//                    } else {
+//                        imageView.setImageResource(R.drawable.walk);
+//                    }
+
+//                    if(sensorEvent.values[0] > (-3) && sensorEvent.values[0] < 1 &&
+//                            sensorEvent.values[1] > (-1) && sensorEvent.values[1] < 1 &&
+//                            sensorEvent.values[2] > 9 && sensorEvent.values[2] < 10) {
+//                        imageView.setImageResource(R.drawable.walking);
+//                    } else if(sensorEvent.values[0] > (-9) && sensorEvent.values[0] < 7 &&
+//                            sensorEvent.values[1] > (-15) && sensorEvent.values[1] < -5 &&
+//                            sensorEvent.values[2] > -2 && sensorEvent.values[2] < 5) {
+//                        imageView.setImageResource(R.drawable.walking);
+//                    } else if(sensorEvent.values[0] > (-2) && sensorEvent.values[0] < 1 &&
+//                            sensorEvent.values[1] > 0 && sensorEvent.values[1] < 10 &&
+//                            sensorEvent.values[2] > 3 && sensorEvent.values[2] < 10) {
+//                        imageView.setImageResource(R.drawable.walking);
+//                    }
+//                    else {
+//                        imageView.setImageResource(R.drawable.running);
+//                    }
 
                     if(currentSecond < startSecond){
                         currentSecond += 60;
@@ -377,6 +397,11 @@ public class StopSportFragment extends Fragment {
                             ifoutput = false;// [2019.05.01 by ANGUS]
                         }
                     }
+
+                    if(currentSecond - startSecond > 5){
+                        imageView.setImageResource(R.drawable.run);
+                    }
+
                 }
             }
 
