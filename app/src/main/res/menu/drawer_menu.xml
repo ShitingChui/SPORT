@@ -29,6 +29,10 @@
             android:icon="@drawable/ic_reporter"
             android:title="報表" />
         <item
+            android:id="@+id/nav_shop"
+            android:icon="@drawable/ic_shop"
+            android:title="商店" />
+        <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
             android:title="我的檔案" />

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -10,7 +11,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        multiDexEnabled true //[2019.05.27.by ANGUS] // 解決 Android App中的方法数超过65535时，往下兼容到低版本设备时会报编译错误 的問題
+        multiDexEnabled true
+        //[2019.05.27.by ANGUS] // 解決 Android App中的方法数超过65535时，往下兼容到低版本设备时会报编译错误 的問題
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8 //[2019.05.10.by ANGUS]
@@ -36,4 +38,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.firebase:firebase-database:17.0.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

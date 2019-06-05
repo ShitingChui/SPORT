@@ -16,9 +16,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
@@ -26,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import weka.classifiers.trees.REPTree;
 import weka.core.Attribute;
@@ -96,6 +107,7 @@ public class StopSportFragment extends Fragment {
     private REPTree rf;
     int imageResource;
 
+    private FirebaseDatabase database;
 
     public void setStopSportFragmentListener(StopSportFragmentListener callback) {
         this.stopSportFragmentListener = callback;
@@ -113,6 +125,33 @@ public class StopSportFragment extends Fragment {
         imageView = (ImageView) view.findViewById(R.id.view_exercise);
         imageView.setImageResource(R.drawable.walk);
         textView = (TextView) view.findViewById(R.id.textView);
+
+        //Firebase
+        ListView list = (ListView) view.findViewById(R.id.listView);
+        final ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(Objects.requireNonNull(getContext()),
+                        android.R.layout.simple_list_item_1,
+                        android.R.id.text1);
+        list.setAdapter(adapter);
+
+        FirebaseApp.initializeApp(getContext());
+
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference reference_contacts = FirebaseDatabase.getInstance().getReference("contacts");
+        reference_contacts.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                adapter.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren() ){
+                    adapter.add(ds.child("name").getValue().toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         btnStopSportFragment.setOnClickListener(new View.OnClickListener(){
             @Override
