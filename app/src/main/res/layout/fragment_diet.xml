@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="40dp"
-                android:text="5/12"
+                android:text="日期"
                 android:textSize="15sp"
                 />
 
@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="8dp"
-                android:text="肉燥米粉"
+                android:text="飲食項目"
                 android:textSize="15sp"
                 />
 
@@ -135,8 +135,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="20dp"
-                android:text="254"
+                android:layout_marginLeft="8dp"
+                android:text="卡路里"
                 android:textSize="15sp"
                 />
 
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="40dp"
-                android:text="5/12"
+                android:text="日期"
                 android:textSize="15sp"
                 />
 
@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="8dp"
-                android:text="牛肉麵"
+                android:text="飲食項目"
                 android:textSize="15sp"
                 />
 
@@ -179,8 +179,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="20dp"
-                android:text="460"
+                android:layout_marginLeft="8dp"
+                android:text="卡路里"
                 android:textSize="15sp"
                 />
 
@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="40dp"
-                android:text="5/11"
+                android:text="日期"
                 android:textSize="15sp"
                 />
 
@@ -215,7 +215,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="8dp"
-                android:text="炒飯"
+                android:text="飲食項目"
                 android:textSize="15sp"
                 />
 
@@ -223,8 +223,8 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="20dp"
-                android:text="550"
+                android:layout_marginLeft="8dp"
+                android:text="卡路里"
                 android:textSize="15sp"
                 />
 
